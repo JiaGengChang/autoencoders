@@ -42,15 +42,15 @@ void backwardPass(Perceptron *per, float prediction, float inputs[], float signa
 
 }
 
-void initialize(Perceptron *per)
+void initialize(Perceptron *per, float plus_minus_half_of)
 {
-	float a = 2.0f; //random value between -0.5a and 0.5a
+	//initialize weights to random value between [-0.5,0.5]*plus_minus_half_of
 	int i;
 	for (i=0; i<per->numFeatures; ++i)
 	{
-		per->weights[i] = runif(a); 
+		per->weights[i] = runif(plus_minus_half_of); 
 	}
-	per->bias = runif(a);
+	per->bias = runif(plus_minus_half_of);
 }
 
 void updateConfusionMatrix(int guess, int truth, int *pTP,  int *pFP, int *pTN, int *pFN)
@@ -65,46 +65,62 @@ void updateConfusionMatrix(int guess, int truth, int *pTP,  int *pFP, int *pTN, 
 	}
 }
 
+void updateNetworkError(float prediction, float signal, float *pError)
+{
+	*pError += 0.5*pow(prediction - signal,2.0f);
+}
+
 void train(Perceptron *per, int numIterations, float **inputs, float *signal, int numExamples)
 {
-	int TP, FP, TN, FN;
-	int nIter=0;
+	int TP, FP, TN, FN; //confusion matrix
+	float error; //network error
+	int nEpoch=0;
 
 	// for each epoch
-	for (; nIter < numIterations; ++nIter)
+	for (; nEpoch < numIterations; ++nEpoch)
 	{
 		int nExample=0;
 		TP = 0; FP = 0; TN = 0; FN = 0;
+		error = 0;
 		
 		// iterate over training records
 		for (; nExample < numExamples; ++nExample)
 		{
 			float activation;
 			int prediction;
-			//predict
+			//network output
 			activation = forwardPass(per, inputs[nExample]);
+			//round network output to nearest integer
 			prediction = (int) (activation + 0.5);
-			//keep track of scores
+			//log performance
 			updateConfusionMatrix(prediction, (int) signal[nExample], &TP, &FP, &TN, &FN);
+			updateNetworkError(prediction, signal[nExample], &error);
 			//update parameters
 			backwardPass(per, prediction, inputs[nExample], signal[nExample]);
 		}
 
 		// metrics
-		printf("nIter: %d, TP: %d, FP: %d, TN: %d, FN: %d\n", nIter, TP, FP, TN, FN);
+		printf("Epoch %d, TP: %d, FP: %d, TN: %d, FN: %d, error: %.2f\n", nEpoch+1, TP, FP, TN, FN, error);
 	}
 }
 
-void printParams(Perceptron *per)
+void test(Perceptron *per, float **inputs, float *signal, int numExamples)
 {
-	printf("bias: %f \n", per->bias);
-	printf("weights: ");
-	int i;
-	for (i=0; i<per->numFeatures; ++i)
+	int TP=0, FP=0, TN=0, FN=0, nExample=0;
+	float error=0.0f;
+	for (; nExample < numExamples; ++nExample)
 	{
-		printf("%f ", per->weights[i]);
+		float activation;
+		int prediction;
+		activation = forwardPass(per, inputs[nExample]);
+		prediction = (int) (activation + 0.5);
+		updateConfusionMatrix(prediction, (int) signal[nExample], &TP, &FP, &TN, &FN);
+		updateNetworkError(prediction, signal[nExample], &error);
+		//no update of weights
 	}
-	printf("\n");
+	// metrics
+	printf("Epoch TT, TP: %d, FP: %d, TN: %d, FN: %d, error: %.2f\n", TP, FP, TN, FN, error);
+	
 }
 
 // IO functions ==============================
@@ -132,6 +148,20 @@ void parseinput(char *fn, float **inputs, float signal[], const int NUM_INPUTS)
 	}
 	fclose(fp);
 }
+
+// debug functions ===========================
+void printParams(Perceptron *per)
+{
+	printf("bias: %f \n", per->bias);
+	printf("weights: ");
+	int i;
+	for (i=0; i<per->numFeatures; ++i)
+	{
+		printf("%f ", per->weights[i]);
+	}
+	printf("\n");
+}
+
 
 void echoinput(float **inputs, float *signal, const int NUM_INPUTS, const int NUM_TRAIN_RECORDS)
 {
