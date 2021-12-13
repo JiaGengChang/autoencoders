@@ -10,8 +10,8 @@
 
 int main()
 {
-	char* train_dir = "../data/parity_10_inputs.csv";
-	char* test_dir = "../data/parity_10_inputs_t.csv";
+	char *train_dir = "data/parity_10_inputs.csv";
+	char *test_dir = "data/parity_10_inputs_t.csv";
 
 	Perceptron per = { .numFeatures=NUM_INPUTS, .learningRate=1e-5 };
 	initialize(&per, 0.1f);
@@ -26,7 +26,7 @@ int main()
 		inputs[i] = malloc(NUM_INPUTS * sizeof * inputs[i]);
 
 	parseinput(train_dir, inputs, signal, NUM_INPUTS);
-	//echoinput(inputs, signal, NUM_INPUTS, NUM_TRAIN_RECORDS);
+	echoinput(inputs, signal, NUM_INPUTS, NUM_TRAIN_RECORDS);
 
 	/*training*/
 	train(&per, NUM_ITER, inputs, signal, NUM_TRAIN_RECORDS);
