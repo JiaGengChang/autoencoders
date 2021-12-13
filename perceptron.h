@@ -17,9 +17,9 @@ typedef struct {
 float forwardPass(Perceptron *per, float inputs[]);
 void backwardPass(Perceptron *per, float prediction, float inputs[], float signal);
 void initialize(Perceptron *per);
-void updateConfusionMatrix(float guess, float truth, int *pTP,  int *pFP, int *pTN, int *pFN);
+void updateConfusionMatrix(int guess, int truth, int *pTP,  int *pFP, int *pTN, int *pFN);
 void train(Perceptron *per, int numIterations, float **inputs, float *signal, int numExamples);
 void printParams(Perceptron *per);
-void parseinput(char *fn, float **inputs, float signal[]);
-void echoinput(float **inputs, float *signal, const int NUM_TRAIN_RECORDS);
+void parseinput(char *fn, float **inputs, float signal[], const int NUM_INPUTS);
+void echoinput(float **inputs, float *signal, const int NUM_INPUTS, const int NUM_TRAIN_RECORDS);
 #endif
