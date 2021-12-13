@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NUM_ITER 10
+#define NUM_ITER 100 
 #define NUM_TRAIN_RECORDS 3 
 
 int main()

@@ -56,13 +56,13 @@ void initialize(Perceptron *per)
 void updateConfusionMatrix(float guess, float truth, int *pTP,  int *pFP, int *pTN, int *pFN)
 {
    	if (abs(guess-truth) < 1e-3) {
-		if (abs(truth-1.0f) < 1e-3) { (*pTP)++; printf("TP\n");}
-		else { (*pFP)++; printf("FP\n");}
+		if (abs(truth-1.0f) < 1e-3) { (*pTP)++;}
+		else { (*pFP)++;}
 	}
 	else 
 	{
-		if (abs(truth-1.0f) < 1e-3) { (*pTN)++; printf("TN\n");} 
-		else { (*pFN)++; printf("FN\n");}
+		if (abs(truth-1.0f) < 1e-3) { (*pTN)++;} 
+		else { (*pFN)++;}
 	}
 }
 
