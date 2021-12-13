@@ -20,7 +20,7 @@ int main()
 	for (;i<10;++i)
 		inputs[i] = malloc(11 * sizeof * inputs[i]);
 
-	parseinput("input.txt", inputs, signal);
+	parseinput("input.csv", inputs, signal);
 
 	/*training*/
 	echoinput(inputs, signal, NUM_TRAIN_RECORDS);
