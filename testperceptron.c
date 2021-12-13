@@ -3,14 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NUM_ITER 20 
-#define NUM_TRAIN_RECORDS 2048 
-#define NUM_INPUTS 11 
+#define NUM_ITER 50 
+#define NUM_INPUTS 10
+#define NUM_TRAIN_RECORDS 768
+#define NUM_TEST_RECORDS 256
 
 int main()
 {
-	Perceptron per = { .numFeatures=NUM_INPUTS, .learningRate=5e-4};
-	initialize(&per);
+	Perceptron per = { .numFeatures=NUM_INPUTS, .learningRate=1e-5 };
+	initialize(&per, 0.1f);
 	printParams(&per);
 	
 	/*allocate train array*/
@@ -21,20 +22,38 @@ int main()
 	for (;i<NUM_TRAIN_RECORDS;++i)
 		inputs[i] = malloc(NUM_INPUTS * sizeof * inputs[i]);
 
-	parseinput("data_11_inputs.csv", inputs, signal, NUM_INPUTS);
+	parseinput("parity_10_inputs.csv", inputs, signal, NUM_INPUTS);
+	//echoinput(inputs, signal, NUM_INPUTS, NUM_TRAIN_RECORDS);
 
 	/*training*/
-	echoinput(inputs, signal, NUM_INPUTS, NUM_TRAIN_RECORDS);
 	train(&per, NUM_ITER, inputs, signal, NUM_TRAIN_RECORDS);
 
-	/*deallocate train array*/
-	/*deallocate tail*/
-	for (i=1; i<NUM_TRAIN_RECORDS;i++)
+	/*allocate test array*/
+	float signal_test[NUM_TEST_RECORDS];
+	float **inputs_test;
+	inputs_test = malloc(NUM_TEST_RECORDS * sizeof * inputs_test);
+	for (i=0;i<NUM_TEST_RECORDS;++i)
+		inputs_test[i] = malloc(NUM_INPUTS * sizeof * inputs_test[i]);
+
+	parseinput("parity_10_inputs_test.csv", inputs_test, signal_test, NUM_INPUTS);
+
+	/*testing*/
+	test(&per, inputs_test, signal_test, NUM_TEST_RECORDS);
+
+
+	/* deallocate */
+	for (i=0; i<NUM_TRAIN_RECORDS;i++)
 	{
 		free(inputs[i]);
 	}
-	/*deallocate head*/
 	free(inputs);
+
+	for (i=0; i<NUM_TEST_RECORDS;i++)
+	{
+		free(inputs_test[i]);
+	}
+	free(inputs_test);
+
 	return 0;
 
 }
