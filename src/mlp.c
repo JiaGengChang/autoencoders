@@ -1,4 +1,4 @@
-#include <../include/mlp.h>
+#include <include/mlp.h>
 
 extern inline float sigmoid(float input)
 	return 1 / (1 + exp(-input));
