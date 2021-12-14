@@ -17,7 +17,7 @@ int main()
 	float inputs[NUM_TRAIN_RECORDS][NUM_INPUTS];
 
 	parseInput(train_dir, inputs, signal);
-	echoInput(inputs, signal);
+	echoInput(inputs, NUM_TRAIN_RECORDS, signal);
 
 	/*training*/
 	train(&per, NUM_ITER, inputs, signal);

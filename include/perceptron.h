@@ -30,5 +30,5 @@ void train(Perceptron *per, int numIterations, float inputs[][NUM_INPUTS], float
 void test(Perceptron *per, float inputs[][NUM_INPUTS], float *signal);
 void printParams(Perceptron *per);
 void parseInput(char *fn, float inputs[][NUM_INPUTS], float *signal);
-void echoInput(float inputs[][NUM_INPUTS], float *signal);
+void echoInput(float inputs[][NUM_INPUTS], const int NUM_RECORDS, float *signal);
 #endif

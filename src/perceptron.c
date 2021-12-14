@@ -159,10 +159,10 @@ void printParams(Perceptron *per)
 }
 
 
-void echoInput(float inputs[][NUM_INPUTS], float *signal)
+void echoInput(float inputs[][NUM_INPUTS], const int NUM_RECORDS, float *signal)
 {
 	size_t i=0;
-	for (;i<COUNT_OF(inputs);++i)
+	for (;i<NUM_RECORDS;++i)
 	{
 		int j=0;
 		printf("inputs: ");
