@@ -15,7 +15,7 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 $(ODIR)/%.o: $(SRCDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-testperceptron: $(OBJ)
+a.out: $(OBJ)
 	$(CC) -o $@ $^ $(CLAGS) $(LIBS)
 
 .PHONY: clean
