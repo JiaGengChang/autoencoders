@@ -1,4 +1,7 @@
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #ifndef mlp_h
 #define mlp_h
@@ -19,9 +22,9 @@ typedef struct {
 } Unit;
 
 typedef struct {
-	struct Unit input[NUM_INPUT]; 
-	struct Unit hidden[NUM_HIDDEN];
-	struct Unit output[NUM_OUTPUT];
+	Unit input[NUM_INPUT]; 
+	Unit hidden[NUM_HIDDEN];
+	Unit output[NUM_OUTPUT];
 	float weights[NUM_PARAMS]; //best to be a 1d array as connections may not be symmetric
 } MultiLayerPerceptron;
 
@@ -31,7 +34,10 @@ void resetNetwork(MultiLayerPerceptron *mlp);
 void activate(Unit *unit);
 void initializeRandomWeights(MultiLayerPerceptron *mlp, float plus_minus_half_of);
 void forwardPass(MultiLayerPerceptron *mlp, float data[NUM_INPUT]);
-void backwardPass(MultiLayerPerceptron *mlp, float signal[NUM_OUTPUT])
-void train(MultiLayerPerceptron *mlp, float input[NUM_TRAIN][NUM_INPUT])
+void backwardPass(MultiLayerPerceptron *mlp, float signal[NUM_OUTPUT]);
+void train(MultiLayerPerceptron *mlp, const float input[NUM_TRAIN][NUM_INPUT], int numIterations);
+float scoreNetwork(MultiLayerPerceptron *mlp, const float input[NUM_TRAIN][NUM_INPUT]);
+void parseInput(char *fn, float input[NUM_TRAIN][NUM_INPUT]);
+void echoInput(float input[NUM_TRAIN][NUM_INPUT]);
 
 #endif

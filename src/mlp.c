@@ -1,13 +1,17 @@
-#include <include/mlp.h>
+#include <./mlp.h>
 
 extern inline float sigmoid(float input)
+{
 	return 1 / (1 + exp(-input));
-
+}
 extern inline float gradient(float input)
+{
 	return input * (1 - input);
-
+}
 extern inline runif(float a)
+{
 	return (float)rand()/(float)(RAND_MAX/a) - 0.5*a;
+}
 
 void resetUnit(Unit *unit)
 {
@@ -100,12 +104,72 @@ void backwardPass(MultiLayerPerceptron *mlp, float signal[NUM_OUTPUT])
 	
 }
 
-void train(MultiLayerPerceptron *mlp, float input[NUM_TRAIN][NUM_INPUT])
+float scoreNetwork(MultiLayerPerceptron *mlp, const float input[NUM_TRAIN][NUM_INPUT])
 {
-	int nTrain;
+	int nTrain,nInput;
+	float error=0.0f;
+	//binary cross-entropy
+	for (nTrain=0;nTrain<NUM_TRAIN;++nTrain)
+	{
+		for(nInput=0;nInput<NUM_INPUT;++NUM_INPUT)
+		{
+			error += input[nTrain][nInput] * log(mlp->output[nInput].activation);
+		}
+	}
+	return error;
+}
+
+void train(MultiLayerPerceptron *mlp, const float input[NUM_TRAIN][NUM_INPUT], int numIterations)
+{
+	int nTrain, nIter;
+
+	for (nIter=0; nIter<numIterations; ++nIter)
+	{
+		for (nTrain=0; nTrain<NUM_TRAIN; ++nTrain)
+		{
+			//evalute
+			forwardPass(mlp, input[nTrain]);
+			// update parameters
+			backwardPass(mlp, input[nTrain]);
+		}
+		printf("Iteration %d, %.2f", nIter, scoreNetwork(mlp, input));
+	}
+
+	printf("Finished, %.2f", scoreNetwork(mlp, input));
+
+}
+
+
+void parseInput(char *fn, float input[NUM_TRAIN][NUM_INPUT])
+{
+	FILE *fp = fopen(fn, "r");
+	char buff[1024];
+	int nRecord = 0;
+	while (fgets(buff, 1024, fp))
+	{
+		char *field = strtok(buff,",");
+		int field_count = 0;
+		while (field)
+		{
+			inputs[nRecord][field_count] = atof(field);
+			field = strtok(NULL, ",");
+			++field_count;
+		}
+		++nRecord;
+	}
+	fclose(fp);
+}
+
+
+void echoInput(float input[NUM_TRAIN][NUM_INPUT])
+{
+	int nTrain,nInput;
 	for (nTrain=0; nTrain<NUM_TRAIN; ++nTrain)
 	{
-//do same stuff as perceptron.c
-
-
+		for (nInput=0; nInput<NUM_INPUT; ++nInput)
+		{
+			printf(" %d", input[nTrain][nInput];
+		}
+		printf("\n");
+	}
 }
