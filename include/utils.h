@@ -15,6 +15,7 @@ typedef struct {
 void mat_apply(Matrix *A, double (*function)(double), Matrix *B);
 Matrix* mat_new(const size_t n1, const size_t n2, double input[]);
 void randomize(Matrix *m, double min, double max);
+void shuffle(Matrix *m, size_t num_shuffles);
 double mat_get(const Matrix *m, const size_t i, const size_t j);
 void mat_set(Matrix *m, const size_t i, const size_t j, double v);
 void mat_dot(Matrix *A, Matrix *B, Matrix *C);

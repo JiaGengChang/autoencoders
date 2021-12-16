@@ -47,14 +47,38 @@ void randomize(Matrix *m, double min, double max)
 	}
 }
 
+void shuffle(Matrix *m, size_t num_shuffles)
+{
+	size_t i,j,r1,r2;
+	double tmp;
+	for (i=0; i<num_shuffles; ++i)
+	{
+		r1 = (size_t) rand() % m->nrows;
+		r2 = (size_t) rand() % m->nrows;
+		//swap rows r1 and r2
+		if (r1 != r2)
+		{
+			for (j=0; j<m->ncols; ++j)
+			{
+				tmp = mat_get(m, r1, j);
+				mat_set(m, r1, j, mat_get(m, r2, j));
+				mat_set(m, r2, j, tmp);
+			}
+		}
+	}
+}
 
 double mat_get(const Matrix *m, const size_t i, const size_t j)
 {
+	//FIXME
+	//implement range checking
 	return m->data[i * m->ncols + j];
 }
 
 void mat_set(Matrix *m, const size_t i, const size_t j, double v)
 {
+	//FIXME
+	//implement range checking
 	m->data[i * m->ncols + j] = v;
 	if (m->data[i * m->ncols + j] != v) {
 		printf("Value not changed\n");
@@ -141,7 +165,7 @@ void print_mat(const Matrix *m)
 	{ 
 		for (j=0; j<m->ncols; ++j)
 		{
-			printf("%.2f ", mat_get(m,i,j));
+			printf("%.4f ", mat_get(m,i,j));
 		}
 		printf("\n");
 	}
