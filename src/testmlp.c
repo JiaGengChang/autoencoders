@@ -10,8 +10,15 @@ double dsigmoid(double x) //derivative of sigmoid
 	return (sigmoid(x)*(1-sigmoid(x)));
 }
 
+double logits_to_probability(double x)
+{
+	double odds = exp(x);
+	double probability = odds / (1+odds);
+}
+
 int main()
 {
+	//the 8 cases to learn
 	static double input[] = {
 		1,0,0,0,0,0,0,0,
 		0,1,0,0,0,0,0,0,
@@ -25,12 +32,14 @@ int main()
 	static double i_init[] = {0,0,0,0,0,0,0,0,1};
 	static double j_init[] = {0,0,0,1};
 	static double k_init[] = {0,0,0,0,0,0,0,0};
-	static const double learningRate = 1e-1;
-	static const size_t numIterations = 5000;
+	static const double learningRate = 0.1;
+	static const size_t numIterations = 100000;
+	static const size_t printEvery = numIterations/50;
+
+	int debug = 0; //whether to print matrices
 	
 	Matrix *t = mat_new(8,8, input); // targets
-	printf("Input matrix: \n");
-	print_mat(t);
+	if (debug) {printf("Input matrix: \n");}
 
 	Matrix *zi = mat_new(1,9,i_init);//input layer. 8 units + 1 bias
 	Matrix *xj = mat_new(1,4,j_init);//hidden layer. 3 units + 1 bias 
@@ -59,6 +68,8 @@ int main()
 		//re-order training data
 		shuffle(t, 3);
 
+		double batch_loss = 0.0f; //binary cross-entropy loss
+
 		//reconstruct current input
 		for (nInput=0; nInput<8; ++nInput)
 		{
@@ -67,8 +78,6 @@ int main()
 			{
 				mat_set(zi, 0, nUnit, mat_get(t, nInput, nUnit));
 			}
-			printf("Input layer activation\n");
-			print_mat(zi);
 			//encode
 			mat_dot(zi, W_ij, xj); //1x9 9x4 1x4
 			mat_apply(xj, sigmoid, zj); //1x4
@@ -76,14 +85,36 @@ int main()
 			//modify bias activation and derivative
 			mat_set(zj, 0, 3, 1.0f);
 			mat_set(dj, 0, 3, 0.0f);
-			printf("Hidden layer activation\n");
-			print_mat(zj);
 			//decode
 			mat_dot(zj, W_jk, xk); //1x4 4x8 1x8
 			mat_apply(xk, sigmoid, zk); //1x8
 			mat_apply(xk, dsigmoid, dk); //1x8
-			printf("Output layer activation\n");
-			print_mat(zk);
+
+			if (debug && nIter%printEvery==0)
+			{
+				printf("Input layer activation\n"); 
+				print_mat(zi);
+				printf("Hidden layer activation\n");
+				print_mat(zj);
+				printf("Output layer activation\n");
+				print_mat(zk);
+			}
+
+			//cross-entropy loss for one training example
+			//- 1/N * sum over k of {t_k * log (p_k)}
+			Matrix *loss_vec = mat_new(1, 8, zk->data);
+			mat_apply(loss_vec, logits_to_probability, loss_vec);
+			mat_apply(loss_vec, log, loss_vec);
+			mat_mult(loss_vec, zi, loss_vec);
+			scalar_mult(loss_vec, -1, loss_vec);
+			double loss_scalar = 0.0f;
+			for (i=0; i<8; ++i)
+			{
+				loss_scalar += mat_get(loss_vec, 0, i);
+			}
+			mat_free(loss_vec);
+			//update batch loss
+			batch_loss += loss_scalar/8;
 
 			//update weights
 			double delta_k_array[8];
@@ -118,6 +149,8 @@ int main()
 			mat_free(delta_j);
 			mat_free(zi_T);
 		}
+		if (nIter % printEvery == 0)
+			printf("iteration %lu, loss %.3f\n", nIter, batch_loss);
 	}
 	//visualize weights
 	printf("W_ij\n");
