@@ -1,9 +1,10 @@
+#ifndef utils_h
+#define utils_h
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef utils_h
-#define utils_h
 
 typedef struct {
 	size_t nrows;
@@ -12,6 +13,7 @@ typedef struct {
 } Matrix;
 
 
+void mat_assign(Matrix *A, Matrix *B);
 void mat_apply(Matrix *A, double (*function)(double), Matrix *B);
 Matrix* mat_new(const size_t n1, const size_t n2, double input[]);
 void randomize(Matrix *m, double min, double max);

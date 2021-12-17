@@ -1,5 +1,17 @@
 #include <utils.h>
 
+//matrix assignment. A:=B
+void mat_assign(Matrix *A, Matrix *B)
+{
+	size_t i,j;
+	for (i=0; i<B->nrows; ++i)
+	{
+		for (j=0; j<B->ncols; ++j)
+		{
+			mat_set(A, i, j, mat_get(B, i, j));
+		}
+	}
+}
 
 void mat_apply(Matrix *A, double (*function)(double), Matrix *B)
 {
@@ -70,21 +82,20 @@ void shuffle(Matrix *m, size_t num_shuffles)
 
 double mat_get(const Matrix *m, const size_t i, const size_t j)
 {
-	//FIXME
-	//implement range checking
+	//TODO
+	//range checking
 	return m->data[i * m->ncols + j];
 }
 
 void mat_set(Matrix *m, const size_t i, const size_t j, double v)
 {
-	//FIXME
-	//implement range checking
+	//TODO
+	//range checking
 	m->data[i * m->ncols + j] = v;
-	if (m->data[i * m->ncols + j] != v) {
-		printf("Value not changed\n");
-	}
 }
 
+//product between two matrices, two vectors, or between matrix and vector
+//all subsumed into 1 subroutine 
 void mat_dot(Matrix *A, Matrix *B, Matrix *C)
 {
 	size_t i,j,k;

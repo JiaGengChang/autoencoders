@@ -32,11 +32,15 @@ int main()
 	static double i_init[] = {0,0,0,0,0,0,0,0,1};
 	static double j_init[] = {0,0,0,1};
 	static double k_init[] = {0,0,0,0,0,0,0,0};
-	static const double learningRate = 0.1;
+	static const double learningRate = 0.01;
+	static const double momentum = 0.9;
 	static const size_t numIterations = 100000;
-	static const size_t printEvery = numIterations/50;
+	static const size_t printEvery = 1e4;
+	static const size_t printFirst = 0;
 
-	int debug = 0; //whether to print matrices
+	printf("#params: learningRate %.3f, momentum %.3f, numIterations %lu, printEvery %lu, printFirst %lu\n", learningRate, momentum, numIterations, printEvery, printFirst);
+
+	int debug = 1; //whether to print matrices. 1 prints weights only. 2 prints vectors
 	
 	Matrix *t = mat_new(8,8, input); // targets
 	if (debug) {printf("Input matrix: \n");}
@@ -57,6 +61,11 @@ int main()
 	randomize(W_ij, -0.1f, 0.1f);
 	randomize(W_jk, -0.1f, 0.1f);
 
+	//track previous changes to weights 
+	//start off as 0 matrices
+	Matrix *dW_ij_prev = mat_new(9,4,NULL); 
+	Matrix *dW_jk_prev = mat_new(4,8,NULL);
+
 	//set 4th column of W_ij to 0
 	//to turn off weights from input layer to bias unit of hidden layer
 	size_t i;
@@ -74,23 +83,23 @@ int main()
 		for (nInput=0; nInput<8; ++nInput)
 		{
 			//initialize input layer of mlp
-			for (nUnit=0; nUnit<8; ++nUnit)
-			{
-				mat_set(zi, 0, nUnit, mat_get(t, nInput, nUnit));
-			}
+			for (nUnit=0; nUnit<8; ++nUnit)	{mat_set(zi, 0, nUnit, mat_get(t, nInput, nUnit));}
+
 			//encode
 			mat_dot(zi, W_ij, xj); //1x9 9x4 1x4
 			mat_apply(xj, sigmoid, zj); //1x4
 			mat_apply(xj, dsigmoid, dj); //1x4
+
 			//modify bias activation and derivative
 			mat_set(zj, 0, 3, 1.0f);
 			mat_set(dj, 0, 3, 0.0f);
+
 			//decode
 			mat_dot(zj, W_jk, xk); //1x4 4x8 1x8
 			mat_apply(xk, sigmoid, zk); //1x8
 			mat_apply(xk, dsigmoid, dk); //1x8
 
-			if (debug && nIter%printEvery==0)
+			if (debug==2 && nIter%printEvery==0)
 			{
 				printf("Input layer activation\n"); 
 				print_mat(zi);
@@ -108,15 +117,13 @@ int main()
 			mat_mult(loss_vec, zi, loss_vec);
 			scalar_mult(loss_vec, -1, loss_vec);
 			double loss_scalar = 0.0f;
-			for (i=0; i<8; ++i)
-			{
-				loss_scalar += mat_get(loss_vec, 0, i);
-			}
+			for (i=0; i<8; ++i) {loss_scalar += mat_get(loss_vec, 0, i);}
 			mat_free(loss_vec);
+
 			//update batch loss
 			batch_loss += loss_scalar/8;
 
-			//update weights
+			//back-propagation
 			double delta_k_array[8];
 			double t_k, z_k, d_k;
 			for (nUnit=0; nUnit<8; ++nUnit)
@@ -126,12 +133,19 @@ int main()
 				d_k = mat_get(dk,0,nUnit);
 				delta_k_array[nUnit] = -(t_k/z_k - (1-t_k)/(1-z_k)) * d_k; //k-dependent part of dE/dW_jk
 			}
+			/*Update W_jk*/
 			Matrix *delta_k = mat_new(1,8,delta_k_array);//1x8
 			Matrix *zj_T = mat_transpose(zj); //4x1
 			mat_dot(zj_T, delta_k, dW_jk); //4x1, 1x8 -> 4x8
+
+			scalar_mult(dW_jk_prev, momentum, dW_jk_prev);//4x8
+			mat_add(dW_jk, dW_jk_prev, dW_jk);//4x8
+			mat_assign(dW_jk_prev, dW_jk);//dW_jk_prev := dW_jk
+
 			scalar_mult(dW_jk, -learningRate, dW_jk); //4x8
 			mat_add(W_jk, dW_jk, W_jk); //update W_jk
 			
+			/*Update W_ij*/
 			Matrix *delta_j = mat_new(1,4,NULL); //1x4
 			Matrix *W_jk_T = mat_transpose(W_jk); //8x4
 			mat_dot(delta_k, W_jk_T, delta_j); //1x8, 8x4 -> 1x4
@@ -139,9 +153,16 @@ int main()
 			
 			Matrix *zi_T = mat_transpose(zi); //9x1
 			mat_dot(zi_T, delta_j, dW_ij); // 9x1, 1x4 -> 9x4
+			
+			scalar_mult(dW_ij_prev, momentum, dW_ij_prev); //9x4
+			mat_add(dW_ij, dW_ij_prev, dW_ij); //9x4
+			mat_assign(dW_ij_prev, dW_ij);// dW_ij_prev := dW_ij
+			
 			scalar_mult(dW_ij, -learningRate, dW_ij); // 9x4
 			mat_add(W_ij, dW_ij, W_ij); // update W_ij
-			for (i=0; i<9; ++i) {mat_set(W_ij, i, 3, 0.0f);} //remove weights going into bias
+
+			//remove weights going into bias
+			for (i=0; i<9; ++i) {mat_set(W_ij, i, 3, 0.0f);} 
 
 			//free temporary matrices
 			mat_free(delta_k);
@@ -149,14 +170,18 @@ int main()
 			mat_free(delta_j);
 			mat_free(zi_T);
 		}
-		if (nIter % printEvery == 0)
-			printf("iteration %lu, loss %.3f\n", nIter, batch_loss);
+		//logging
+		if (nIter < printFirst || nIter % printEvery == 0)
+			printf("iteration %lu, loss %.8f\n", nIter, batch_loss);
 	}
 	//visualize weights
-	printf("W_ij\n");
-	print_mat(W_ij);
-	printf("W_jk\n");
-	print_mat(W_jk);
+	if (debug==1)
+	{
+		printf("W_ij\n");
+		print_mat(W_ij);
+		printf("W_jk\n");
+		print_mat(W_jk);
+	}
 
 	return 0;
 	
