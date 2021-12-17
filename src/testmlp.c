@@ -32,18 +32,18 @@ int main()
 	static double i_init[] = {0,0,0,0,0,0,0,0,1};
 	static double j_init[] = {0,0,0,1};
 	static double k_init[] = {0,0,0,0,0,0,0,0};
-	static const double learningRate = 0.01;
-	static const double momentum = 0.9;
-	static const size_t numIterations = 100000;
-	static const size_t printEvery = 1e4;
-	static const size_t printFirst = 0;
+	static const double learningRate = 1.0;
+	static const double momentum = 0.0;
+	static const size_t numIterations = 1e4;
+	static const size_t printFirst = 1e4;
+	static const size_t printEvery = 1e2;
 
 	printf("#params: learningRate %.3f, momentum %.3f, numIterations %lu, printEvery %lu, printFirst %lu\n", learningRate, momentum, numIterations, printEvery, printFirst);
 
-	int debug = 1; //whether to print matrices. 1 prints weights only. 2 prints vectors
+	int debug = 0; //whether to print matrices. 1 prints weights only. 2 prints vectors
 	
 	Matrix *t = mat_new(8,8, input); // targets
-	if (debug) {printf("Input matrix: \n");}
+	if (debug) {printf("Input matrix: \n"); print_mat(t);}
 
 	Matrix *zi = mat_new(1,9,i_init);//input layer. 8 units + 1 bias
 	Matrix *xj = mat_new(1,4,j_init);//hidden layer. 3 units + 1 bias 
