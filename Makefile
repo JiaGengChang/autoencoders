@@ -23,7 +23,7 @@ perceptron: $(OBJ1)
 	$(CC) -o $@ $^ $(CLAGS) $(LIBS)
 
 mlp: $(OBJ2)
-	$(CC) -o $@ $^ $(CLAGS) $(LIBS)
+	$(CC) -g -o $@ $^ $(CLAGS) $(LIBS)
 
 .PHONY: clean
 
