@@ -18,7 +18,7 @@ I trained a multi-layer perceptron to encode with 3 units a one-hot encoded vect
 
 | Hyperparameter | Info | Equation |
 |-|-|-|
-| activation function *g* | sigmoid | <img src="https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cg%28x%29+%3D+%5Cfrac%7B1%7D%7B1+%2B+exp%28-x%29%7D"> , derivative <img src="https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cg%27%28x%29+%3D+%5Cg%28x%29+%5Ccdot+%281+-+g%28x%29%5C%2C%29" alt="\g'(x) = \g(x) \cdot (1 - g(x)\,)"> |
+| activation function *g* | sigmoid | activation <img src="https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cg%28x%29+%3D+%5Cfrac%7B1%7D%7B1+%2B+exp%28-x%29%7D"> , derivative <img src="https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cg%27%28x%29+%3D+%5Cg%28x%29+%5Ccdot+%281+-+g%28x%29%5C%2C%29" alt="\g'(x) = \g(x) \cdot (1 - g(x)\,)"> |
 | loss | binary cross-entropy | <img src="https://render.githubusercontent.com/render/math?math=\large E=-%5Cfrac%7B1%7D%7BN%7D%5C%2C%5Csum_%7Bk%3D1%7D%5E%7BN%7D%5C%2Ct_%7Bk%7D%5C%2Clog%28p_%7Bk%7D%29%20%2B%20%281-t_%7Bk%7D%29%5C%2Clog%281-p_%7Bk%7D%29"> |
 | optimizer | classical momentum | learning rate <img src="https://render.githubusercontent.com/render/math?math=%5Ceta%20%5Cin%20%5B0.01%2C%201.0%5D"> , momentum <img src="https://render.githubusercontent.com/render/math?math=m%20%5Cin%20%5B0%2C%201%5D">|
 | weights initialization | random uniform | between -0.1 and 0.1 |
@@ -31,14 +31,12 @@ where **t** is the target one-hot encoded vector, and **p** is the output layer 
 
 The derivatives of binary cross-entropy loss with respect to weights worked out to be:
 
-<img src=
-"https://render.githubusercontent.com/render/math?math=\huge %5Cdisplaystyle+%5Cfrac%7B%5Cpartial+E%7D%7B%5Cpartial+w_%7Bjk%7D%7D+%3D+-%5Cfrac%7B1%7D%7BN%7D%5C%2C%28%5Cfrac%7Bt_%7Bk%7D%7D%7Bz_%7Bk%7D%7D-%5Cfrac%7B1-t_%7Bk%7D%7D%7B1-z_%7Bk%7D%7D%29%5C%3A+g%27%28x_%7Bk%7D%29%5C%3A+z_%7Bj%7D+%3D+%5Cdelta_%7Bk%7Dz_%7Bj%7D" 
-alt="\frac{\partial E}{\partial w_{jk}} = -\frac{1}{N}\,(\frac{t_{k}}{z_{k}}-\frac{1-t_{k}}{1-z_{k}})\: g'(x_{k})\: z_{j} = \delta_{k}z_{j}">
+<img src="https://render.githubusercontent.com/render/math?math=\huge %5Cdisplaystyle+%5Cfrac%7B%5Cpartial+E%7D%7B%5Cpartial+w_%7Bjk%7D%7D+%3D+-%5Cfrac%7B1%7D%7BN%7D%5C%2C%28%5Cfrac%7Bt_%7Bk%7D%7D%7Bz_%7Bk%7D%7D-%5Cfrac%7B1-t_%7Bk%7D%7D%7B1-z_%7Bk%7D%7D%29%5Ccdot+g%27%28x_%7Bk%7D%29%5Ccdot+z_%7Bj%7D+%3D+%5Cdelta_%7Bk%7D%5Ccdot+z_%7Bj%7D" 
+alt="\frac{\partial E}{\partial w_{jk}} = -\frac{1}{N}\,(\frac{t_{k}}{z_{k}}-\frac{1-t_{k}}{1-z_{k}})\cdot g'(x_{k})\cdot z_{j} = \delta_{k}\cdot z_{j}">
 
 for weights between hidden layer j and output layer k, and 
 
-<img src=
-"https://render.githubusercontent.com/render/math?math=\huge %5Cdisplaystyle+%5Cfrac%7B%5Cpartial+E%7D%7B%5Cpartial+w_%7Bij%7D%7D+%3D+-%5Cfrac%7B1%7D%7BN%7D+%5Csum_%7Bk%3D1%7D%5E%7BN%7D+%5C%3A+%28%5Cfrac%7Bt_%7Bk%7D%7D%7Bz_%7Bk%7D%7D-%5Cfrac%7B1-t_%7Bk%7D%7D%7B1-z_%7Bk%7D%7D%29+%5Ccdot+g%27%28x_%7Bk%7D%29+%5Ccdot+w_%7Bjk%7D+%5Ccdot+g%27%28x_%7Bj%7D%29+%5Ccdot+z_%7Bi%7D+%3D+%5Cdelta_%7Bj%7D%5Ccdot+z_%7Bi%7D" 
+<img src="https://render.githubusercontent.com/render/math?math=\huge %5Cdisplaystyle+%5Cfrac%7B%5Cpartial+E%7D%7B%5Cpartial+w_%7Bij%7D%7D+%3D+-%5Cfrac%7B1%7D%7BN%7D+%5Csum_%7Bk%3D1%7D%5E%7BN%7D+%5C%3A+%28%5Cfrac%7Bt_%7Bk%7D%7D%7Bz_%7Bk%7D%7D-%5Cfrac%7B1-t_%7Bk%7D%7D%7B1-z_%7Bk%7D%7D%29+%5Ccdot+g%27%28x_%7Bk%7D%29+%5Ccdot+w_%7Bjk%7D+%5Ccdot+g%27%28x_%7Bj%7D%29+%5Ccdot+z_%7Bi%7D+%3D+%5Cdelta_%7Bj%7D%5Ccdot+z_%7Bi%7D" 
 alt="\frac{\partial E}{\partial w_{ij}} = -\frac{1}{N} \sum_{k=1}^{N} \: (\frac{t_{k}}{z_{k}}-\frac{1-t_{k}}{1-z_{k}}) \cdot g'(x_{k}) \cdot w_{jk} \cdot g'(x_{j}) \cdot z_{i} = \delta_{j}\cdot z_{i}">
 
 for weights between the input and hidden units.
