@@ -62,14 +62,14 @@ How is the network learning to encode input vectors? We look at the final state 
 
 ![weight matrices of 8-3-8 autoencoder](plots/mlp_w.png)
 
-Without loss of generality, what the network has learned is to match the signs between mirrored pairs of weights <img src="https://render.githubusercontent.com/render/math?math=w_{nj}, \: w_{jn} \: \forall n \in [0,7]">. For example, if *t* is <img src="https://render.githubusercontent.com/render/math?math=\huge %28%201%5C%3A%200%5C%3A%200%5C%3A%200%5C%3A%200%5C%3A%200%5C%3A%200%5C%3A%200%20%29">, then only j0 and k0 will fire, producing a large positive activation in output node k0 because <img src="https://render.githubusercontent.com/render/math?math=w_{i0,j0}"> and <img src="https://render.githubusercontent.com/render/math?math=w_{j0,k0}">
+Without loss of generality, what the network has learned is to match the signs between mirrored pairs of weights <img src="https://render.githubusercontent.com/render/math?math=\large w_{nj}, \: w_{jn} \: \forall n \in [0,7]">. For example, if *t* is <img src="https://render.githubusercontent.com/render/math?math=\large %28%201%5C%3A%200%5C%3A%200%5C%3A%200%5C%3A%200%5C%3A%200%5C%3A%200%5C%3A%200%20%29">, then only j0 and k0 will fire, producing a large positive activation in output node k0 because <img src="https://render.githubusercontent.com/render/math?math=\large w_{i0,j0}"> and <img src="https://render.githubusercontent.com/render/math?math=\large w_{j0,k0}">
  have the same sign (does not matter whether positive or negative). The two other hidden units also have synergistic weights entering/leaving them, but they will stay silent because the inputs into those units is 0. 
 
 ## Encoding a 16-bit one-hot vector with 3 bits
 
-Is it possible to be even more efficient and encode a one-hot vector \textit{twice} the size as our previous vector, with 3 hidden units? If each hidden unit can represent 3 activation states, then we can encode up to a one-hot vector of length $3^n = 3^3 = 27$. As we are using a sigmoid activation, the three activation states are naturally 0, 0.5, and 1, requiring asymptotic input values of -Inf, 0, and Inf at each hidden unit. While our loss will never reach 0, it is theoretically possible to train such a network.
+Is it possible to be even more efficient and encode a one-hot vector \textit{twice} the size as our previous vector, with 3 hidden units? If each hidden unit can represent 3 activation states, then we can encode up to a one-hot vector of length 3^n = 3^3 = 27. As we are using a sigmoid activation, the three activation states are naturally 0, 0.5, and 1, requiring asymptotic input values of -Inf, 0, and Inf at each hidden unit. While our loss will never reach 0, it is theoretically possible to train such a network.
 
-To try this out, I trained a multi-layer perceptron to encode with 3 units a one-hot encoded vector of length \textbf{16}. The training results are shown below. 
+To try this out, I trained a multi-layer perceptron to encode with 3 units a one-hot encoded vector of length **16**. The training results are shown below. 
 
 ![training comparison between two autoencoders](plots/mlp_8_16.png)
 
@@ -78,7 +78,7 @@ As per our predictions, the autoencoder is still able to encode a one-hot repres
 ![weight matrices of 16-3-16 autoencoder](plots/mlp16_w.png)
 
 Visualizing the weight matrices in heatmap above, we see that the network is again solving the problem by mirroring the sign of the weights. Additionally, it mirrors the relative magnitude of the weights. This time, each hidden node has three states, as the mirrored incoming and outgoing weights are in one of negative (blue), zero (off-white), and positive (red). The connections entering output node 14 (k14) look all negative, but this is offset by the positive bias (<img src=
-"https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+w_%7Bj3%2Ck14%7D" 
+"https://render.githubusercontent.com/render/math?math=\large %5Cdisplaystyle+w_%7Bj3%2Ck14%7D" 
 alt="w_{j3,k14}">). Again, the bias in the input layer is not doing much (it cannot be any other value than 0 otherwise non-1 units will fire), but the bias in the hidden layer is helping to adjust the median weight to zero.
 
 ## Code availability
