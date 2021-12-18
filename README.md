@@ -18,8 +18,8 @@ I trained a multi-layer perceptron to encode with 3 units a one-hot encoded vect
 
 | Hyperparameter | Info | Equation |
 |-|-|-|
-| activation function *g* | sigmoid | <img src="https://render.githubusercontent.com/render/math?math=\huge g%28x%29%20%3D%20%5Cfrac%7B1%7D%7B1%20%2B%20exp%28-x%29%7D%2C%20%5C%3Ag%27%28x%29%20%3D%20g%28x%29%5Ccdot%281-g%28x%29%29">|
-| loss | binary cross-entropy | <img src="https://render.githubusercontent.com/render/math?math=\huge E=-%5Cfrac%7B1%7D%7BN%7D%5C%2C%5Csum_%7Bk%3D1%7D%5E%7BN%7D%5C%2Ct_%7Bk%7D%5C%2Clog%28p_%7Bk%7D%29%20%2B%20%281-t_%7Bk%7D%29%5C%2Clog%281-p_%7Bk%7D%29"> |
+| activation function *g* | sigmoid | <img src="https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cg%28x%29+%3D+%5Cfrac%7B1%7D%7B1+%2B+exp%28-x%29%7D"> , derivative <img src="https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cg%27%28x%29+%3D+%5Cg%28x%29+%5Ccdot+%281+-+g%28x%29%5C%2C%29" alt="\g'(x) = \g(x) \cdot (1 - g(x)\,)"> |
+| loss | binary cross-entropy | <img src="https://render.githubusercontent.com/render/math?math=\large E=-%5Cfrac%7B1%7D%7BN%7D%5C%2C%5Csum_%7Bk%3D1%7D%5E%7BN%7D%5C%2Ct_%7Bk%7D%5C%2Clog%28p_%7Bk%7D%29%20%2B%20%281-t_%7Bk%7D%29%5C%2Clog%281-p_%7Bk%7D%29"> |
 | optimizer | classical momentum | learning rate <img src="https://render.githubusercontent.com/render/math?math=%5Ceta%20%5Cin%20%5B0.01%2C%201.0%5D"> , momentum <img src="https://render.githubusercontent.com/render/math?math=m%20%5Cin%20%5B0%2C%201%5D">|
 | weights initialization | random uniform | between -0.1 and 0.1 |
 
