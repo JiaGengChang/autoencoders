@@ -2,18 +2,19 @@
 This is a classical autoencoder for intended for CPU training, that is written in optimized code using C. 
 
 ## Problem description
-We want to train a neural network to encode a one-hot encoded input vector that represents the digits 1 to 8 into a vector of length < 8, and to also reconstruct the original input given the encoding.
+Suppose we want to train a neural network to encode an input vector with one 1 and seven 0's, corresponding to the 8 cases below.
 
-| target | t0 | t1 | t2 | t3 | t4 | t5 | t6 | t7 |
+| n | t0 | t1 | t2 | t3 | t4 | t5 | t6 | t7 |
 | - | - | - | - | - | - | - | - | - |
 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | 2 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ... | ... | ... | ... | ... | ... | ... | ... | ... |
+| 7 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
 | 8 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
 
-As seen above, the 8 input vectors correspond to the rows of a 8x8 identity matrix — a relatively easy pattern for the network to learn to encode and decode. We will start off with attempting to teach the network a binary representation of this input.
+The 8 input vectors correspond to the one-hot encoding of 8 categorical variables — a relatively easy pattern for the network to learn to encode and decode. This can be most efficiently done using 3 binary bits. We will train a network to learn the binary representation of this input vector.
 
-## Encoding a 8-bit one-hot vector with 3 bits
+## Encoding 8 categories with 3 bits
 I trained a multi-layer perceptron to encode with 3 units a one-hot encoded vector of length 8. For the sake of clarity and terminology of indices used, here is a visual representation of the network, showing the i, j, and k indices used to describe the input, hidden, and output layer units, and the weights between them.
 
 ![multi-layer perceptron diagram](plots/838.drawio.png)
