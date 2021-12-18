@@ -1,3 +1,4 @@
 \obj
 *.out
 \old
+notebooks/create_inputs.ipynb 
