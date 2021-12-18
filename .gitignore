@@ -2,3 +2,5 @@
 *.out
 \old
 notebooks/create_inputs.ipynb 
+\notebooks/.ipynb_checkpoints
+\.ipynb_checkpoints
