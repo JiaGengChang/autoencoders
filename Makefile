@@ -1,5 +1,6 @@
 IDIR=include
 SRCDIR=src
+BIN=bin
 CC=gcc
 CFLAGS=-I$(IDIR) 
 
@@ -24,13 +25,13 @@ $(ODIR)/%.o: $(SRCDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 perceptron: $(OBJ1)
-	$(CC) -o $@ $^ $(CLAGS) $(LIBS)
+	$(CC) -o $(BIN)/$@ $^ $(CLAGS) $(LIBS)
 
 mlp: $(OBJ2)
-	$(CC) -o $@ $^ $(CLAGS) $(LIBS)
+	$(CC) -o $(BIN)/$@ $^ $(CLAGS) $(LIBS)
 
 mlp16: $(OBJ3)
-	$(CC) -g -o $@ $^ $(CLAGS) $(LIBS)
+	$(CC) -o $(BIN)/$@ $^ $(CLAGS) $(LIBS)
 
 .PHONY: clean
 
