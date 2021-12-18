@@ -4,7 +4,7 @@ This is a classical autoencoder for intended for CPU training, that is written i
 ## Problem description
 We want to train a neural network to encode a one-hot encoded input vector that represents the digits 1 to 8 into a vector of length < 8, and to also reconstruct the original input given the encoding.
 
-| target | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+| target | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 | - | - | - | - | - | - | - | - | - |
 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | 2 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
