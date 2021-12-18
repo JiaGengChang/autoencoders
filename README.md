@@ -1,5 +1,5 @@
 # Self-supervised learning with autoencoders
-This is a classical autoencoder for intended for CPU training, that is written in optimized code using C. 
+This is a classical autoencoder written in optimized code using C, intended for CPU training.
 
 ![banner plot](plots/mlp_banner.png)
 
