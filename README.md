@@ -14,7 +14,11 @@ We want to train a neural network to encode a one-hot encoded input vector that 
 As seen above, the 8 input vectors correspond to the rows of a 8x8 identity matrix — a relatively easy pattern for the network to learn to encode and decode. We will start off with attempting to teach the network a binary representation of this input.
 
 ## Encoding a 8-bit one-hot vector with 3 bits
-I trained a multi-layer perceptron to encode with 3 units a one-hot encoded vector of length 8. Here are the hyperparameters of the autoencoder:
+I trained a multi-layer perceptron to encode with 3 units a one-hot encoded vector of length 8. For the sake of clarity and terminology of indices used, here is a visual representation of the network, showing the i, j, and k indices used to describe the input, hidden, and output layer units, and the weights between them.
+
+![multi-layer perceptron diagram](plots/838.drawio.png)
+
+Here are the details of the multi-layer perceptron needed for its reconstruction:
 
 | Hyperparameter | Info | Equation |
 |-|-|-|
