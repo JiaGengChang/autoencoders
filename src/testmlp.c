@@ -26,8 +26,8 @@ int main()
 	static double i_init[] = {0,0,0,0,0,0,0,0,1};
 	static double j_init[] = {0,0,0,1};
 	static double k_init[] = {0,0,0,0,0,0,0,0};
-	static const double learningRate = 0.1;
-	static const double momentum = 0.9;
+	static const double learningRate = 0.05;
+	static const double momentum = 0.0;
 	static const size_t numIterations = 1e4;
 	static const size_t printFirst = 1e4;
 	static const size_t printEvery = 1e2;
