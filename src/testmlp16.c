@@ -34,7 +34,7 @@ int main()
 	static double i_init[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1}; //16 + 1
 	static double j_init[] = {0,0,0,1};
 	static double k_init[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; //16
-	static const double learningRate = 0.1;
+	static const double learningRate = 0.3;
 	static const double momentum = 0;
 	static const size_t numIterations = 1e4;
 	static const size_t printFirst = 1e4;
@@ -176,7 +176,7 @@ int main()
 			printf("iteration %lu, loss %.8f\n", nIter, batch_loss);
 	}
 	//visualize weights
-	if (debug==1)
+	if (debug>1)
 	{
 		printf("W_ij\n");
 		print_mat(W_ij);
