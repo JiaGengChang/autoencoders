@@ -1,7 +1,7 @@
 # Self-supervised learning with autoencoders
 This is a classical autoencoder for intended for CPU training, that is written in optimized code using C. 
 
-![banner plot](plots/mlp16_w.png)
+![banner plot](plots/mlp-banner.png)
 
 ## Problem description
 Suppose we want to train a neural network to encode an input vector with one 1 and seven 0's, corresponding to the 8 cases below.
