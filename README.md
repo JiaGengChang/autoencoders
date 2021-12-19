@@ -19,7 +19,7 @@ The 8 input vectors correspond to the one-hot encoding of 8 categorical variable
 ## Encoding 8 categories with 3 bits
 I trained a multi-layer perceptron to encode with 3 units a one-hot encoded vector of length 8. For the sake of clarity and terminology of indices used, here is a visual representation of the network, showing the i, j, and k indices used to describe the input, hidden, and output layer units, and the weights between them.
 
-![multi-layer perceptron diagram](plots/838.drawio.png)
+![multi-layer perceptron diagram](plots/mlp_arch.png)
 
 Here are the details of the multi-layer perceptron needed for its reconstruction:
 
