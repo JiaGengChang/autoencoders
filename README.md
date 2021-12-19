@@ -1,5 +1,5 @@
 # Self-supervised learning with autoencoders
-This is a classical autoencoder that comes with a mini-library for matrix operations.  
+This repository contains the code needed to train a classical autoencoder.
 
 ![banner plot](plots/mlp_banner.png)
 
