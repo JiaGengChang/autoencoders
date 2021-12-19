@@ -34,7 +34,7 @@ Our loss function is binary cross-entropy, defined as:
 
 <img src="https://render.githubusercontent.com/render/math?math=\huge E=-\frac{1}{N}\,\sum_{k=1}^{N}\,t_{k}\,log(p_{k}) %2B (1-t_{k})\,log(1-p_{k})">
 
-where **t** is the target one-hot encoded vector, and **p** is the output layer activation (a probability vector), summation over *k* from N=1 to N=8 in our case. 
+where **t** is the target one-hot encoded vector, and **p** is the output layer activation (a probability vector), summation over *k* from k=1 to k=8 (N) in our case. 
 
 The derivatives of binary cross-entropy loss with respect to weights worked out to be:
 
