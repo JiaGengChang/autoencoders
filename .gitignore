@@ -1,6 +1,5 @@
 \obj
 *.out
-\old
 \notebooks
 \.ipynb_checkpoints
 \bin
