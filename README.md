@@ -34,7 +34,7 @@ Our loss function is binary cross-entropy, defined as:
 
 <img src="https://render.githubusercontent.com/render/math?math=\huge E=-\frac{1}{N}\,\sum_{k=1}^{N}\,t_{k}\,log(p_{k}) %2B (1-t_{k})\,log(1-p_{k})">
 
-where **t** is the target one-hot encoded vector, and **p** is the output layer activation (a probability vector), summation over *k* from N=1 to N=8 in our case. 
+where **t** is the target one-hot encoded vector, and **p** is the output layer activation (a probability vector), summation over *k* from k=1 to k=8 (N) in our case. 
 
 The derivatives of binary cross-entropy loss with respect to weights worked out to be:
 
@@ -76,6 +76,8 @@ To try this out, I trained a multi-layer perceptron to encode with 3 units a one
 ![training comparison between two autoencoders](plots/mlp_8_16.png)
 
 As per our predictions, the autoencoder is still able to encode a one-hot representation of 16 different inputs. Training is slower, because there are more weights to adjust, but binary cross-entropy is reduced to a comparably small value after around 10000 epochs. We now looka at the weights of this 16-3-16 autoencoder.
+
+## How the 16-3-16 autoencoder learns to encode its input
 
 ![weight matrices of 16-3-16 autoencoder](plots/mlp16_w.png)
 
