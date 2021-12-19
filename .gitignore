@@ -1,7 +1,6 @@
 \obj
 *.out
 \old
-notebooks/create_inputs.ipynb 
-\notebooks/.ipynb_checkpoints
+\notebooks
 \.ipynb_checkpoints
 \bin
