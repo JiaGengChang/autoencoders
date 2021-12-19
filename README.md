@@ -77,6 +77,8 @@ To try this out, I trained a multi-layer perceptron to encode with 3 units a one
 
 As per our predictions, the autoencoder is still able to encode a one-hot representation of 16 different inputs. Training is slower, because there are more weights to adjust, but binary cross-entropy is reduced to a comparably small value after around 10000 epochs. We now looka at the weights of this 16-3-16 autoencoder.
 
+## How the 16-3-16 autoencoder learns to encode its input
+
 ![weight matrices of 16-3-16 autoencoder](plots/mlp16_w.png)
 
 Visualizing the weight matrices in heatmap above, we see that the network is again solving the problem by mirroring the sign of the weights. Additionally, it mirrors the relative magnitude of the weights. This time, each hidden node has three states, as the mirrored incoming and outgoing weights are in one of negative (blue), zero (off-white), and positive (red). The connections entering output node 14 (k14) look all negative, but this is offset by the positive bias (<img src=
