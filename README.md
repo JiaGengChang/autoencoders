@@ -1,5 +1,5 @@
 # Self-supervised learning with autoencoders
-This is a classical autoencoder written in optimized code using C, intended for CPU training.
+This is a classical autoencoder written in C, along with a mini-library for matrix operations.
 
 ![banner plot](plots/mlp_banner.png)
 
