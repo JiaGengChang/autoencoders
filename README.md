@@ -84,5 +84,5 @@ Visualizing the weight matrices in heatmap above, we see that the network is aga
 alt="w_{j3,k14}">). Again, the bias in the input layer is not doing much (it cannot be any other value than 0 otherwise non-1 units will fire), but the bias in the hidden layer is helping to adjust the median weight to zero.
 
 ## Code availability
-The code for the 8-unit multi-layer perceptron is available as `testmlp.c`, and the code for the 16-unit multi-layer perceptron is found in `testmlp16.c`. I also include a `utils.c` definitions file for simple matrix operations required (e.g., dot product, hadamard product, and scalar operations). The `output` directory contains the .csv files used to generate the plots. Jupyter notebooks for generating the plots are also included as `.ipynb` files, and the `.png` files are found in `plots`.
+The code for the 8-unit multi-layer perceptron is available as `testmlp.c`, and the code for the 16-unit multi-layer perceptron is found in `testmlp16.c`. I also include a `utils.c` definitions file for simple matrix operations required (e.g., dot product, hadamard product, and scalar operations). The `output` directory contains the .csv files used to generate the plots. Jupyter notebooks for generating the plots are not included.
 
